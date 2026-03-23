@@ -1,0 +1,42 @@
+redirectsOrigin = "config"
+plugins = []
+functionsDirectory = "C:\\Users\\pedro\\.gemini\\antigravity\\scratch\\reddit-tech-news\\functions"
+functionsDirectoryOrigin = "config-v1"
+headers = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "C:\\Users\\pedro\\.gemini\\antigravity\\scratch\\reddit-tech-news\\dist"
+publishOrigin = "config"
+commandOrigin = "config"
+command = "npm run build"
+functions = "C:\\Users\\pedro\\.gemini\\antigravity\\scratch\\reddit-tech-news\\functions"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[[redirects]]
+from = "/reddit-api/*"
+to = "https://www.reddit.com/:splat"
+status = 200.0
+force = true
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
