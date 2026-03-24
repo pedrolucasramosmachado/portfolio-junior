@@ -31,7 +31,7 @@ import {
 } from 'recharts';
 import './index.css';
 
-const API_URL = 'http://localhost:3001/api';
+const API_URL = 'http://localhost:3001/api'; // Em produção, aponte para o backend real se necessário
 
 const iconMap = {
   Utensils,
@@ -166,7 +166,7 @@ function App() {
     <div className="container">
       <header className="section-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-          <a href="../../projeto1-portfolio-react/index.html" style={{ color: 'var(--text-secondary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem' }}>
+          <a href="https://pedro-jr-portfolio-prm.pages.dev/" style={{ color: 'var(--text-secondary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem' }}>
              ← Voltar
           </a>
           <div>

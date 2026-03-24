@@ -194,7 +194,7 @@ function App() {
           <Layout color="var(--accent)" size={32} />
           <h1>Kanban<span>Pro</span></h1>
         </div>
-        <a href="../../projeto1-portfolio-react/index.html" className="back-link">
+        <a href="https://pedro-jr-portfolio-prm.pages.dev/" className="back-link">
           <ArrowLeft size={16} /> Voltar ao Portfolio
         </a>
       </header>

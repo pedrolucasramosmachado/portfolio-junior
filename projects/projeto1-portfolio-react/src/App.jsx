@@ -89,30 +89,31 @@ function App() {
               </div>
             </a>
 
-            <a href="#" className="project-card">
+            <a href="https://finance-flow-prm.pages.dev/" target="_blank" rel="noopener noreferrer" className="project-card">
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                 <Github size={20} color="var(--text-secondary)" />
                 <ExternalLink size={20} color="var(--text-secondary)" />
               </div>
               <h3>FinanceFlow Dash</h3>
-              <p>Dashboard Full Stack completo para gestão financeira. Inclui gráficos interativos, controle de receitas/despesas e banco de dados persistente.</p>
+              <p>Dashboard Full Stack completo para gestão financeira. Inclui gráficos interativos, controle de receitas/despesas e interface responsiva otimizada.</p>
               <div style={{ marginTop: 'auto', paddingTop: '1.5rem', display: 'flex', gap: '0.5rem' }}>
                 <span className="tech-badge">React</span>
-                <span className="tech-badge">Prisma</span>
-                <span className="tech-badge">Recharts</span>
+                <span className="tech-badge">Chart.js / Recharts</span>
+                <span className="tech-badge">Cloudflare Pages</span>
               </div>
             </a>
 
-            <a href="#" className="project-card">
+            <a href="https://reddit-tech-news-prm.pages.dev/" target="_blank" rel="noopener noreferrer" className="project-card">
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                 <Github size={20} color="var(--text-secondary)" />
                 <ExternalLink size={20} color="var(--text-secondary)" />
               </div>
               <h3>Reddit Tech News</h3>
-              <p>Consumo de API pública do Reddit para exibir as últimas notícias de tecnologia. Foco em performance e tratamento de estados de carregamento.</p>
+              <p>Curadoria de notícias globais via API do Reddit. Interface premium com tradução automática, modo dark/light e sistema de favoritos persistente.</p>
               <div style={{ marginTop: 'auto', paddingTop: '1.5rem', display: 'flex', gap: '0.5rem' }}>
-                <span className="tech-badge">API Fetch</span>
-                <span className="tech-badge">Hooks</span>
+                <span className="tech-badge">API Integration</span>
+                <span className="tech-badge">Google Translate API</span>
+                <span className="tech-badge">Cloudflare Pages</span>
               </div>
             </a>
           </div>

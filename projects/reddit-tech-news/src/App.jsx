@@ -185,14 +185,14 @@ function App() {
     <div className="app-container">
       <header>
         <div className="header-top">
-          <a href="http://localhost:5173" className="brand">
+          <a href="https://pedro-jr-portfolio-prm.pages.dev/" className="brand">
             <div className={loading && !showFavs ? 'spinner' : ''} style={{ display: 'flex' }}>
               <Languages size={22} />
             </div>
             <h1>Global Trends</h1>
           </a>
           <div className="nav-controls">
-            <a href="http://localhost:5173" className="back-link">
+            <a href="https://pedro-jr-portfolio-prm.pages.dev/" className="back-link">
               <ArrowLeft size={15} /> Voltar
             </a>
             <button
