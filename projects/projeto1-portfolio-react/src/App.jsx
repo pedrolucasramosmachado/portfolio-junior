@@ -75,7 +75,21 @@ function App() {
         <section id="projects">
           <h2 className="section-title">Projetos em Destaque</h2>
           <div className="project-grid">
-            <a href="http://localhost:5174" className="project-card">
+            <a href="https://kanban-pro-ux-prm.pages.dev/" target="_blank" rel="noopener noreferrer" className="project-card">
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                <Github size={20} color="var(--text-secondary)" />
+                <ExternalLink size={20} color="var(--text-secondary)" />
+              </div>
+              <h3>Kanban Pro | UX Focus</h3>
+              <p>Aplicação premium de gerenciamento de tarefas com interface Glassmorphism, Modal personalizado e animações fluidas via Framer Motion.</p>
+              <div style={{ marginTop: 'auto', paddingTop: '1.5rem', display: 'flex', gap: '0.5rem' }}>
+                <span className="tech-badge">React 19</span>
+                <span className="tech-badge">Framer Motion</span>
+                <span className="tech-badge">Cloudflare Pages</span>
+              </div>
+            </a>
+
+            <a href="#" className="project-card">
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                 <Github size={20} color="var(--text-secondary)" />
                 <ExternalLink size={20} color="var(--text-secondary)" />
@@ -89,7 +103,7 @@ function App() {
               </div>
             </a>
 
-            <a href="http://localhost:5175" className="project-card">
+            <a href="#" className="project-card">
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                 <Github size={20} color="var(--text-secondary)" />
                 <ExternalLink size={20} color="var(--text-secondary)" />
@@ -99,48 +113,6 @@ function App() {
               <div style={{ marginTop: 'auto', paddingTop: '1.5rem', display: 'flex', gap: '0.5rem' }}>
                 <span className="tech-badge">API Fetch</span>
                 <span className="tech-badge">Hooks</span>
-              </div>
-            </a>
-
-            <a href="http://localhost:5176" className="project-card">
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-                <Github size={20} color="var(--text-secondary)" />
-                <ExternalLink size={20} color="var(--text-secondary)" />
-              </div>
-              <h3>Kanban & UX Focus</h3>
-              <p>Aplicação de gerenciamento de tarefas com interface minimalista e foco em produtividade pessoal.</p>
-              <div style={{ marginTop: 'auto', paddingTop: '1.5rem', display: 'flex', gap: '0.5rem' }}>
-                <span className="tech-badge">UI/UX</span>
-                <span className="tech-badge">Framer Motion</span>
-                <span className="tech-badge">Local Storage</span>
-              </div>
-            </a>
-
-            <a href="#" className="project-card">
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-                <Github size={20} color="var(--text-secondary)" />
-                <ExternalLink size={20} color="var(--text-secondary)" />
-              </div>
-              <h3>Sulbrasil Fashion Catalog</h3>
-              <p>Experiência premium de catálogo digital com gestão de ativos via Cloudflare R2 e backend em tempo real com Supabase.</p>
-              <div style={{ marginTop: 'auto', paddingTop: '1.5rem', display: 'flex', gap: '0.5rem' }}>
-                <span className="tech-badge">React</span>
-                <span className="tech-badge">Supabase</span>
-                <span className="tech-badge">Cloudflare R2</span>
-              </div>
-            </a>
-
-            <a href="#" className="project-card">
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-                <Github size={20} color="var(--text-secondary)" />
-                <ExternalLink size={20} color="var(--text-secondary)" />
-              </div>
-              <h3>Street Multimarcas</h3>
-              <p>Plataforma de alta performance para revenda de veículos seminovos. Inclui simulador de financiamento e filtros dinâmicos de alta velocidade.</p>
-              <div style={{ marginTop: 'auto', paddingTop: '1.5rem', display: 'flex', gap: '0.5rem' }}>
-                <span className="tech-badge">Vite</span>
-                <span className="tech-badge">Framer Motion</span>
-                <span className="tech-badge">Tailwind</span>
               </div>
             </a>
           </div>
