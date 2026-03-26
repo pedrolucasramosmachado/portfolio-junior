@@ -45,6 +45,22 @@ const iconMap = {
 
 const COLORS = ['#4f46e5', '#10b981', '#ef4444', '#f59e0b', '#06b6d4', '#8b5cf6', '#ec4899'];
 
+const INITIAL_CATEGORIES = [
+  { id: '1', name: 'Alimentação', icon: 'Utensils' },
+  { id: '2', name: 'Transporte', icon: 'Car' },
+  { id: '3', name: 'Lazer', icon: 'Gamepad' },
+  { id: '4', name: 'Saúde', icon: 'HeartPulse' },
+  { id: '5', name: 'Educação', icon: 'GraduationCap' },
+  { id: '6', name: 'Salário', icon: 'DollarSign' }
+];
+
+const INITIAL_TRANSACTIONS = [
+  { id: 't1', description: 'Salário Mensal', amount: 5000, type: 'INCOME', categoryId: '6', date: new Date().toISOString(), category: INITIAL_CATEGORIES[5] },
+  { id: 't2', description: 'Supermercado', amount: 450.50, type: 'EXPENSE', categoryId: '1', date: new Date().toISOString(), category: INITIAL_CATEGORIES[0] },
+  { id: 't3', description: 'Assinatura Netflix', amount: 55.90, type: 'EXPENSE', categoryId: '3', date: new Date().toISOString(), category: INITIAL_CATEGORIES[2] },
+  { id: 't4', description: 'Gasolina', amount: 200.00, type: 'EXPENSE', categoryId: '2', date: new Date().toISOString(), category: INITIAL_CATEGORIES[1] }
+];
+
 function App() {
   const [transactions, setTransactions] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -72,16 +88,21 @@ function App() {
         fetch(`${API_URL}/transactions`),
         fetch(`${API_URL}/categories`)
       ]);
+      
+      if (!tRes.ok || !cRes.ok) throw new Error('API Offline');
+
       const [tData, cData] = await Promise.all([tRes.json(), cRes.json()]);
-      console.log('Transactions loaded:', tData);
       setTransactions(tData);
       setCategories(cData);
     } catch (err) {
-      console.error('Fetch error:', err);
+      console.warn('Usando dados de demonstração (API Offline)');
+      setTransactions(INITIAL_TRANSACTIONS);
+      setCategories(INITIAL_CATEGORIES);
     } finally {
       setLoading(false);
     }
   };
+
 
   const handleAddTransaction = async (e) => {
     e.preventDefault();

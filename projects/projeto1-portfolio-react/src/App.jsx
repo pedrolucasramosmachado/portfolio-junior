@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Moon, Sun, ArrowRight, Github, ExternalLink, Code2, X } from 'lucide-react';
 import './index.css';
+import profilePic from './assets/profile.jpg';
 
 function App() {
   const [theme, setTheme] = useState('dark');
@@ -49,24 +50,28 @@ function App() {
 
         <section id="about">
           <h2 className="section-title">Sobre Mim</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }}>
-            <div>
+          <div className="about-grid">
+            <div className="profile-container">
+              <div className="profile-blur-bg"></div>
+              <img src={profilePic} alt="Pedro Lucas" className="profile-img" />
+            </div>
+            <div className="about-content">
               <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', marginBottom: '1.5rem' }}>
                 Sou um desenvolvedor apaixonado pela intersecção entre design e código. 
                 Meu foco é construir aplicações que não apenas funcionem, mas que proporcionem 
                 uma experiência memorável ao usuário.
               </p>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', marginBottom: '2rem' }}>
                 Atualmente me especializando em <strong>React, TypeScript e Ecossistema Node.js</strong>, 
                 sempre buscando as melhores práticas de Clean Code e Performance.
               </p>
-            </div>
-            <div className="glass-card" style={{ padding: '2rem', border: '1px solid var(--glass-border)', borderRadius: '20px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><Code2 size={20} color="var(--accent)" /> React.js</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><Code2 size={20} color="var(--accent)" /> Node.js</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><Code2 size={20} color="var(--accent)" /> SQLite / Prisma</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><Code2 size={20} color="var(--accent)" /> UI/UX Design</div>
+              <div className="glass-card" style={{ padding: '2rem', border: '1px solid var(--glass-border)', borderRadius: '20px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><Code2 size={20} color="var(--accent)" /> React.js</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><Code2 size={20} color="var(--accent)" /> Node.js</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><Code2 size={20} color="var(--accent)" /> SQLite / Prisma</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><Code2 size={20} color="var(--accent)" /> UI/UX Design</div>
+                </div>
               </div>
             </div>
           </div>
