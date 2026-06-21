@@ -22,9 +22,11 @@ Muitos usuários têm dificuldade em manter o controle de suas finanças devido 
 
 ## 🛠️ Como Rodar Localmente
 1. Clone o repositório.
-2. Instale as dependências: `npm install`.
-3. Configure o banco de dados: `npx prisma migrate dev`.
-4. Inicie o servidor: `npm run dev`.
+2. Instale as dependências: `npm install` (na raiz, client e server).
+3. Configure o arquivo `.env` no diretório `client` (já configurado com `VITE_API_URL`).
+4. Configure o banco de dados: `npx prisma migrate dev` (no diretório `server`).
+5. Inicie o servidor e o cliente: `npm run dev`.
 
 ---
-*Este projeto demonstra competência em Fullstack development, integração de bancos de dados relacionais e visualização de dados complexos.*
+*Este projeto foi totalmente **localizado para Português Brasileiro (PT-BR)**, incluindo o banco de dados (Prisma), servidor e interface, para garantir uma experiência consistente e profissional em portfólios locais.*
+

@@ -14,7 +14,8 @@ import {
   Search,
   X,
   TrendingUp,
-  TrendingDown
+  TrendingDown,
+  Loader2
 } from 'lucide-react';
 import { 
   PieChart, 
@@ -30,8 +31,11 @@ import {
   CartesianGrid
 } from 'recharts';
 import './index.css';
+import { createClient } from '@supabase/supabase-js';
 
-const API_URL = 'http://localhost:3001/api'; // Em produção, aponte para o backend real se necessário
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const iconMap = {
   Utensils,
@@ -46,19 +50,19 @@ const iconMap = {
 const COLORS = ['#4f46e5', '#10b981', '#ef4444', '#f59e0b', '#06b6d4', '#8b5cf6', '#ec4899'];
 
 const INITIAL_CATEGORIES = [
-  { id: '1', name: 'Alimentação', icon: 'Utensils' },
-  { id: '2', name: 'Transporte', icon: 'Car' },
-  { id: '3', name: 'Lazer', icon: 'Gamepad' },
-  { id: '4', name: 'Saúde', icon: 'HeartPulse' },
-  { id: '5', name: 'Educação', icon: 'GraduationCap' },
-  { id: '6', name: 'Salário', icon: 'DollarSign' }
+  { id: '1', nome: 'Alimentação', icone: 'Utensils' },
+  { id: '2', nome: 'Transporte', icone: 'Car' },
+  { id: '3', nome: 'Lazer', icone: 'Gamepad' },
+  { id: '4', nome: 'Saúde', icone: 'HeartPulse' },
+  { id: '5', nome: 'Educação', icone: 'GraduationCap' },
+  { id: '6', nome: 'Salário', icone: 'DollarSign' }
 ];
 
 const INITIAL_TRANSACTIONS = [
-  { id: 't1', description: 'Salário Mensal', amount: 5000, type: 'INCOME', categoryId: '6', date: new Date().toISOString(), category: INITIAL_CATEGORIES[5] },
-  { id: 't2', description: 'Supermercado', amount: 450.50, type: 'EXPENSE', categoryId: '1', date: new Date().toISOString(), category: INITIAL_CATEGORIES[0] },
-  { id: 't3', description: 'Assinatura Netflix', amount: 55.90, type: 'EXPENSE', categoryId: '3', date: new Date().toISOString(), category: INITIAL_CATEGORIES[2] },
-  { id: 't4', description: 'Gasolina', amount: 200.00, type: 'EXPENSE', categoryId: '2', date: new Date().toISOString(), category: INITIAL_CATEGORIES[1] }
+  { id: 't1', descricao: 'Salário Mensal', valor: 5000, tipo: 'INCOME', categoria_id: 6, data: new Date().toISOString(), categoria: INITIAL_CATEGORIES[5] },
+  { id: 't2', descricao: 'Supermercado', valor: 450.50, tipo: 'EXPENSE', categoria_id: 1, data: new Date().toISOString(), categoria: INITIAL_CATEGORIES[0] },
+  { id: 't3', descricao: 'Assinatura Netflix', valor: 55.90, tipo: 'EXPENSE', categoria_id: 3, data: new Date().toISOString(), categoria: INITIAL_CATEGORIES[2] },
+  { id: 't4', descricao: 'Gasolina', valor: 200.00, tipo: 'EXPENSE', categoria_id: 2, data: new Date().toISOString(), categoria: INITIAL_CATEGORIES[1] }
 ];
 
 function App() {
@@ -71,12 +75,13 @@ function App() {
   const [filterType, setFilterType] = useState('ALL'); // ALL, INCOME, EXPENSE
   const [searchTerm, setSearchTerm] = useState('');
   const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [isOffline, setIsOffline] = useState(false);
 
   // Form State
-  const [description, setDescription] = useState('');
-  const [amount, setAmount] = useState('');
-  const [type, setType] = useState('EXPENSE');
-  const [categoryId, setCategoryId] = useState('');
+  const [descricao, setDescricao] = useState('');
+  const [valor, setValor] = useState('');
+  const [tipo, setTipo] = useState('EXPENSE');
+  const [categoriaId, setCategoriaId] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -84,19 +89,38 @@ function App() {
 
   const fetchData = async () => {
     try {
-      const [tRes, cRes] = await Promise.all([
-        fetch(`${API_URL}/transactions`),
-        fetch(`${API_URL}/categories`)
-      ]);
+      // 1. Fetch Categories
+      const { data: cData, error: cErr } = await supabase
+        .from('categorias')
+        .select('*')
+        .order('nome');
       
-      if (!tRes.ok || !cRes.ok) throw new Error('API Offline');
+      if (cErr) throw cErr;
 
-      const [tData, cData] = await Promise.all([tRes.json(), cRes.json()]);
-      setTransactions(tData);
+      // 2. Fetch Transactions with Category details
+      const { data: tData, error: tErr } = await supabase
+        .from('transacoes')
+        .select(`
+          *,
+          categoria:categorias(*)
+        `)
+        .order('data', { ascending: false });
+
+      if (tErr) throw tErr;
+
       setCategories(cData);
+      setTransactions(tData);
+      setIsOffline(false);
     } catch (err) {
-      console.warn('Usando dados de demonstração (API Offline)');
-      setTransactions(INITIAL_TRANSACTIONS);
+      console.warn('Supabase Offline/Error. Usando LocalStorage/Mock.');
+      setIsOffline(true);
+      
+      const localData = localStorage.getItem('finance_flow_data');
+      if (localData) {
+        setTransactions(JSON.parse(localData));
+      } else {
+        setTransactions(INITIAL_TRANSACTIONS);
+      }
       setCategories(INITIAL_CATEGORIES);
     } finally {
       setLoading(false);
@@ -106,53 +130,113 @@ function App() {
 
   const handleAddTransaction = async (e) => {
     e.preventDefault();
-    if (!description || !amount || !categoryId) return alert('Preecha todos os campos!');
+    if (!descricao || !valor || !categoriaId) return alert('Preecha todos os campos!');
     
+    const val = parseFloat(valor);
+    const catId = parseInt(categoriaId);
+
+    if (isOffline) {
+      const newTransaction = {
+        id: `local-${Date.now()}`,
+        descricao,
+        valor: val,
+        tipo,
+        categoria_id: catId,
+        data: new Date().toISOString(),
+        categoria: categories.find(c => c.id == catId)
+      };
+      const updated = [newTransaction, ...transactions];
+      setTransactions(updated);
+      localStorage.setItem('finance_flow_data', JSON.stringify(updated));
+      setIsModalOpen(false);
+      resetForm();
+      return;
+    }
+
     try {
-      const res = await fetch(`${API_URL}/transactions`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ description, amount, type, categoryId })
-      });
-      if (res.ok) {
-        fetchData();
-        setIsModalOpen(false);
-        resetForm();
-      }
+      const { data, error } = await supabase
+        .from('transacoes')
+        .insert([{
+          descricao,
+          valor: val,
+          tipo,
+          categoria_id: catId,
+          data: new Date().toISOString()
+        }])
+        .select(`
+          *,
+          categoria:categorias(*)
+        `)
+        .single();
+
+      if (error) throw error;
+
+      setTransactions([data, ...transactions]);
+      setIsModalOpen(false);
+      resetForm();
     } catch (err) {
-      console.error('Add error:', err);
+      console.error('Error adding to Supabase:', err);
+      // Fallback local if Supabase fails
+      const newTransaction = {
+        id: `local-${Date.now()}`,
+        descricao,
+        valor: val,
+        tipo,
+        categoria_id: catId,
+        data: new Date().toISOString(),
+        categoria: categories.find(c => c.id == catId)
+      };
+      const updated = [newTransaction, ...transactions];
+      setTransactions(updated);
+      localStorage.setItem('finance_flow_data', JSON.stringify(updated));
+      setIsModalOpen(false);
+      resetForm();
     }
   };
 
   const handleDelete = async (id) => {
     if (!confirm('Excluir esta transação?')) return;
+
+    if (isOffline || String(id).startsWith('local-')) {
+      const updated = transactions.filter(t => t.id !== id);
+      setTransactions(updated);
+      localStorage.setItem('finance_flow_data', JSON.stringify(updated));
+      return;
+    }
+
     try {
-      const res = await fetch(`${API_URL}/transactions/${id}`, { method: 'DELETE' });
-      if (res.ok) {
-        setTransactions(prev => prev.filter(t => t.id !== id));
-      }
+      const { error } = await supabase
+        .from('transacoes')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      setTransactions(prev => prev.filter(t => t.id !== id));
     } catch (err) {
-      console.error('Delete error:', err);
+      console.error('Error deleting from Supabase:', err);
+      const updated = transactions.filter(t => t.id !== id);
+      setTransactions(updated);
+      localStorage.setItem('finance_flow_data', JSON.stringify(updated));
     }
   };
 
   const resetForm = () => {
-    setDescription('');
-    setAmount('');
-    setType('EXPENSE');
-    setCategoryId('');
+    setDescricao('');
+    setValor('');
+    setTipo('EXPENSE');
+    setCategoriaId('');
   };
 
   // Filter Logic - FIXED: Ensure clean filtering
   const filteredTransactions = transactions.filter(t => {
-    const matchesFilter = filterType === 'ALL' || t.type === filterType;
-    const matchesSearch = t.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter = filterType === 'ALL' || t.tipo === filterType;
+    const matchesSearch = t.descricao.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
   const totals = transactions.reduce((acc, t) => {
-    if (t.type === 'INCOME') acc.income += t.amount;
-    else acc.expense += t.amount;
+    if (t.tipo === 'INCOME') acc.income += t.valor;
+    else acc.expense += t.valor;
     return acc;
   }, { income: 0, expense: 0 });
 
@@ -161,25 +245,26 @@ function App() {
   // Chart Data: Expense by Category
   const pieData = categories.map(cat => {
     const total = transactions
-      .filter(t => t.categoryId === cat.id && t.type === 'EXPENSE')
-      .reduce((sum, t) => sum + t.amount, 0);
-    return { name: cat.name, value: total };
+      .filter(t => t.categoria_id === cat.id && t.tipo === 'EXPENSE')
+      .reduce((sum, t) => sum + t.valor, 0);
+    return { name: cat.nome, value: total };
   }).filter(d => d.value > 0);
 
   // Chart Data: Balance Timeline (Mocking a simple progression)
   const timelineData = transactions.slice().reverse().reduce((acc, t) => {
     const prevBalance = acc.length > 0 ? acc[acc.length - 1].balance : 0;
-    const currentBalance = t.type === 'INCOME' ? prevBalance + t.amount : prevBalance - t.amount;
+    const currentBalance = t.tipo === 'INCOME' ? prevBalance + t.valor : prevBalance - t.valor;
     acc.push({
-      date: new Date(t.date).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }),
+      date: new Date(t.data).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }),
       balance: currentBalance
     });
     return acc;
   }, []);
 
   if (loading) return (
-    <div style={{ background: '#0a0a0c', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
-      <div className="loader">Carregando Finanças...</div>
+    <div style={{ background: '#0a0a0c', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white', gap: '1rem' }}>
+      <Loader2 size={40} className="animate-spin" style={{ color: 'var(--primary)' }} />
+      <div style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Carregando Finanças...</div>
     </div>
   );
 
@@ -192,7 +277,10 @@ function App() {
           </a>
           <div>
             <h1 style={{ fontSize: '2rem', fontWeight: 800 }}>FinanceFlow<span style={{ color: 'var(--primary)' }}>Dash</span></h1>
-            <p style={{ color: 'var(--text-secondary)' }}>Controle de gastos pessoal</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <p style={{ color: 'var(--text-secondary)' }}>Controle de gastos pessoal</p>
+              {isOffline && <span style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b', fontSize: '0.65rem', padding: '0.1rem 0.4rem', borderRadius: '4px', border: '1px solid rgba(245,158,11,0.2)' }}>MODO DEMO / OFFLINE</span>}
+            </div>
           </div>
         </div>
         <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>
@@ -287,7 +375,7 @@ function App() {
 
             <div className="transaction-list">
               {filteredTransactions.map(t => {
-                const Icon = iconMap[t.category.icon] || MoreHorizontal;
+                const Icon = iconMap[t.categoria.icone] || MoreHorizontal;
                 return (
                   <div key={t.id} className="glass-card transaction-item">
                     <div className="transaction-info">
@@ -295,15 +383,15 @@ function App() {
                         <Icon size={20} />
                       </div>
                       <div>
-                        <div style={{ fontWeight: 600 }}>{t.description}</div>
+                        <div style={{ fontWeight: 600 }}>{t.descricao}</div>
                         <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
-                          {t.category.name} • {new Date(t.date).toLocaleDateString('pt-BR')}
+                          {t.categoria.nome} • {new Date(t.data).toLocaleDateString('pt-BR')}
                         </div>
                       </div>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                      <div style={{ fontWeight: 700, color: t.type === 'INCOME' ? 'var(--success)' : 'var(--danger)' }}>
-                        {t.type === 'INCOME' ? '+' : '-'} R$ {t.amount.toFixed(2)}
+                      <div style={{ fontWeight: 700, color: t.tipo === 'INCOME' ? 'var(--success)' : 'var(--danger)' }}>
+                        {t.tipo === 'INCOME' ? '+' : '-'} R$ {t.valor.toFixed(2)}
                       </div>
                       <button onClick={() => handleDelete(t.id)} style={{ background: 'none', border: 'none', color: 'rgba(239, 68, 68, 0.4)', cursor: 'pointer' }}>
                         <Trash2 size={18} />
@@ -312,6 +400,7 @@ function App() {
                   </div>
                 );
               })}
+
               {filteredTransactions.length === 0 && (
                 <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary)' }}>
                   <Wallet size={48} style={{ opacity: 0.2, marginBottom: '1rem' }} />
@@ -354,24 +443,24 @@ function App() {
             <form onSubmit={handleAddTransaction}>
               <div className="form-group">
                 <label>Descrição</label>
-                <input required value={description} onChange={e => setDescription(e.target.value)} placeholder="Ex: Mercado, Salário..." />
+                <input required value={descricao} onChange={e => setDescricao(e.target.value)} placeholder="Ex: Mercado, Salário..." />
               </div>
               <div className="form-group">
                 <label>Valor (R$)</label>
-                <input type="number" step="0.01" required value={amount} onChange={e => setAmount(e.target.value)} placeholder="0,00" />
+                <input type="number" step="0.01" required value={valor} onChange={e => setValor(e.target.value)} placeholder="0,00" />
               </div>
               <div className="form-group">
                 <label>Tipo</label>
-                <select value={type} onChange={e => setType(e.target.value)}>
+                <select value={tipo} onChange={e => setTipo(e.target.value)}>
                   <option value="EXPENSE">Despesa</option>
                   <option value="INCOME">Receita</option>
                 </select>
               </div>
               <div className="form-group">
                 <label>Categoria</label>
-                <select required value={categoryId} onChange={e => setCategoryId(e.target.value)}>
+                <select required value={categoriaId} onChange={e => setCategoriaId(e.target.value)}>
                   <option value="">Selecione uma categoria</option>
-                  {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                  {categories.map(c => <option key={c.id} value={c.id}>{c.nome}</option>)}
                 </select>
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
@@ -379,6 +468,7 @@ function App() {
                 <button type="submit" className="btn btn-primary" style={{ flex: 1, justifyContent: 'center' }}>Salvar</button>
               </div>
             </form>
+
           </div>
         </div>
       )}

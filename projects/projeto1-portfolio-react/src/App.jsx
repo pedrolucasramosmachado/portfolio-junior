@@ -115,7 +115,21 @@ function App() {
               </div>
             </a>
 
-            <a href="https://finance-flow-prm.pages.dev/" target="_blank" rel="noopener noreferrer" className="project-card reveal reveal-delay-1">
+            <a href="https://reddit-tech-news-prm.pages.dev/" target="_blank" rel="noopener noreferrer" className="project-card reveal reveal-delay-1">
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                <Github size={20} color="var(--text-secondary)" />
+                <ExternalLink size={20} color="var(--text-secondary)" />
+              </div>
+              <h3>Reddit Tech News</h3>
+              <p>Curadoria de notícias globais via API do Reddit. Interface premium com tradução automática, modo dark/light e sistema de favoritos persistente.</p>
+              <div style={{ marginTop: 'auto', paddingTop: '1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <span className="tech-badge">API Integration</span>
+                <span className="tech-badge">Google Translate API</span>
+                <span className="tech-badge">Cloudflare Pages</span>
+              </div>
+            </a>
+
+            <a href="https://finance-flow-prm.pages.dev/" target="_blank" rel="noopener noreferrer" className="project-card reveal reveal-delay-2">
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                 <Github size={20} color="var(--text-secondary)" />
                 <ExternalLink size={20} color="var(--text-secondary)" />
@@ -129,7 +143,7 @@ function App() {
               </div>
             </a>
 
-            <a href="https://sparta-fitness-v1.netlify.app" target="_blank" rel="noopener noreferrer" className="project-card reveal reveal-delay-2">
+            <a href="https://sparta-fitness-v1.netlify.app" target="_blank" rel="noopener noreferrer" className="project-card reveal reveal-delay-3">
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                 <Github size={20} color="var(--text-secondary)" />
                 <ExternalLink size={20} color="var(--text-secondary)" />
@@ -144,7 +158,7 @@ function App() {
               </div>
             </a>
 
-            <a href="https://style-barber-milton.netlify.app" target="_blank" rel="noopener noreferrer" className="project-card reveal reveal-delay-3">
+            <a href="https://style-barber-milton.netlify.app" target="_blank" rel="noopener noreferrer" className="project-card reveal reveal-delay-4">
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                 <Github size={20} color="var(--text-secondary)" />
                 <ExternalLink size={20} color="var(--text-secondary)" />
@@ -156,20 +170,6 @@ function App() {
                 <span className="tech-badge">CSS Modules</span>
                 <span className="tech-badge">JavaScript</span>
                 <span className="tech-badge">Netlify</span>
-              </div>
-            </a>
-
-            <a href="https://reddit-tech-news-prm.pages.dev/" target="_blank" rel="noopener noreferrer" className="project-card reveal reveal-delay-4">
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-                <Github size={20} color="var(--text-secondary)" />
-                <ExternalLink size={20} color="var(--text-secondary)" />
-              </div>
-              <h3>Reddit Tech News</h3>
-              <p>Curadoria de notícias globais via API do Reddit. Interface premium com tradução automática, modo dark/light e sistema de favoritos persistente.</p>
-              <div style={{ marginTop: 'auto', paddingTop: '1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                <span className="tech-badge">API Integration</span>
-                <span className="tech-badge">Google Translate API</span>
-                <span className="tech-badge">Cloudflare Pages</span>
               </div>
             </a>
           </div>

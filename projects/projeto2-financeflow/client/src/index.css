@@ -11,6 +11,15 @@
   --font-sans: 'Inter', -apple-system, system-ui, sans-serif;
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
 [data-theme='light'] {
   --bg-primary: #f8fafc;
   --bg-secondary: #ffffff;
@@ -38,6 +47,12 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
 }
 
 /* Glassmorphism Card */
@@ -182,4 +197,57 @@ input, select, textarea {
 
 input:focus, select:focus {
   border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+select option {
+  background-color: #1e293b; /* Fundo sólido para opções no modo escuro */
+  color: white;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .dashboard-content {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .stats-sidebar {
+    position: static !important;
+  }
+  
+  .stats-sidebar .glass-card {
+    position: static !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+    margin-bottom: 2rem;
+  }
+
+  .transaction-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .transaction-item > div:last-child {
+    width: 100%;
+    justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-card);
+  }
+
+  .modal-content {
+    margin: 1rem;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
 }

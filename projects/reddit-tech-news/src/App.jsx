@@ -273,21 +273,30 @@ function App() {
                     <Star size={16} fill={isFav(post) ? 'currentColor' : 'none'} />
                   </button>
 
-                  <div className="card-image-wrap">
-                    {post.image?.startsWith('http') ? (
-                      <img src={post.image} alt="" className="post-thumbnail" />
-                    ) : (
-                      <div className="image-placeholder-luxury">
-                        <img
-                          src={PLACEHOLDERS[category]}
-                          alt=""
-                          className="post-thumbnail"
-                          style={{ opacity: 0.25 }}
+                    <div className="card-image-wrap">
+                      {post.image?.startsWith('http') ? (
+                        <img 
+                          src={post.image} 
+                          alt="" 
+                          className="post-thumbnail" 
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = PLACEHOLDERS[category];
+                            e.target.style.opacity = '0.3';
+                          }}
                         />
-                        <div className="placeholder-icon-abs">{ICONS[category]}</div>
-                      </div>
-                    )}
-                  </div>
+                      ) : (
+                        <div className="image-placeholder-luxury">
+                          <img
+                            src={PLACEHOLDERS[category]}
+                            alt=""
+                            className="post-thumbnail"
+                            style={{ opacity: 0.25 }}
+                          />
+                          <div className="placeholder-icon-abs">{ICONS[category]}</div>
+                        </div>
+                      )}
+                    </div>
 
                   <div className="post-content">
                     <h2 className="post-title">{post.title}</h2>

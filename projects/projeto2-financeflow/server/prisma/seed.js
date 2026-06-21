@@ -2,23 +2,24 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 async function main() {
-  const categories = [
-    { name: 'Alimentação', icon: 'Utensils' },
-    { name: 'Transporte', icon: 'Car' },
-    { name: 'Lazer', icon: 'Gamepad' },
-    { name: 'Saúde', icon: 'HeartPulse' },
-    { name: 'Educação', icon: 'GraduationCap' },
-    { name: 'Salário', icon: 'DollarSign' },
-    { name: 'Outros', icon: 'MoreHorizontal' },
+  const categorias = [
+    { nome: 'Alimentação', icone: 'Utensils' },
+    { nome: 'Transporte', icone: 'Car' },
+    { nome: 'Lazer', icone: 'Gamepad' },
+    { nome: 'Saúde', icone: 'HeartPulse' },
+    { nome: 'Educação', icone: 'GraduationCap' },
+    { nome: 'Salário', icone: 'DollarSign' },
+    { nome: 'Outros', icone: 'MoreHorizontal' },
   ]
 
-  for (const category of categories) {
-    await prisma.category.upsert({
-      where: { name: category.name },
+  for (const categoria of categorias) {
+    await prisma.categoria.upsert({
+      where: { nome: categoria.nome },
       update: {},
-      create: category,
+      create: categoria,
     })
   }
+
 }
 
 main()
