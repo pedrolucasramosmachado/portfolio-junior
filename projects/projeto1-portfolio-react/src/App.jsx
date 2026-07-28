@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, ArrowRight, Github, ExternalLink, Code2, X, Terminal, Mail, MessageCircle, Instagram } from 'lucide-react';
+import { Moon, Sun, ArrowRight, Github, ExternalLink, Code2, X, Terminal, Mail, MessageCircle, Instagram, Home, User, Briefcase } from 'lucide-react';
 import './index.css';
 import profilePic from './assets/profile.jpg';
 
 // Main Application Component - Pedro Lucas Portfolio
 function App() {
   const [theme, setTheme] = useState('dark');
+  const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -28,6 +29,27 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const sections = document.querySelectorAll('section');
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '-25% 0px -45% 0px' });
+
+    sections.forEach(section => {
+      if (section.id) navObserver.observe(section);
+    });
+
+    return () => {
+      sections.forEach(section => {
+        if (section.id) navObserver.unobserve(section);
+      });
+    };
+  }, []);
+
   const toggleTheme = () => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
   };
@@ -41,10 +63,10 @@ function App() {
             PEDRO<span>LUCAS</span>
           </div>
           <ul className="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">Sobre</a></li>
-            <li><a href="#projects">Projetos</a></li>
-            <li><a href="#contact">Contato</a></li>
+            <li><a href="#home" className={activeSection === 'home' ? 'active' : ''}>Home</a></li>
+            <li><a href="#about" className={activeSection === 'about' ? 'active' : ''}>Sobre</a></li>
+            <li><a href="#projects" className={activeSection === 'projects' ? 'active' : ''}>Projetos</a></li>
+            <li><a href="#contact" className={activeSection === 'contact' ? 'active' : ''}>Contato</a></li>
           </ul>
           <button className="theme-toggle" onClick={toggleTheme}>
             {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
@@ -101,7 +123,22 @@ function App() {
         <section id="projects">
           <h2 className="section-title reveal">Projetos em Destaque</h2>
           <div className="project-grid">
-            <a href="https://kanban-pro-ux-prm.pages.dev/" target="_blank" rel="noopener noreferrer" className="project-card reveal">
+            <a href="https://newbanks-web.vercel.app/login" target="_blank" rel="noopener noreferrer" className="project-card reveal">
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                <Github size={20} color="var(--text-secondary)" />
+                <ExternalLink size={20} color="var(--text-secondary)" />
+              </div>
+              <h3>NewBanks Web | Fintech Platform</h3>
+              <p>Plataforma bancária e fintech moderna com fluxo de autenticação, dashboard de gestão financeira e interface responsiva otimizada.</p>
+              <div style={{ marginTop: 'auto', paddingTop: '1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <span className="tech-badge">React</span>
+                <span className="tech-badge">TypeScript</span>
+                <span className="tech-badge">Vite</span>
+                <span className="tech-badge">Vercel</span>
+              </div>
+            </a>
+
+            <a href="https://kanban-pro-ux-prm.pages.dev/" target="_blank" rel="noopener noreferrer" className="project-card reveal reveal-delay-1">
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                 <Github size={20} color="var(--text-secondary)" />
                 <ExternalLink size={20} color="var(--text-secondary)" />
@@ -115,7 +152,7 @@ function App() {
               </div>
             </a>
 
-            <a href="https://reddit-tech-news-prm.pages.dev/" target="_blank" rel="noopener noreferrer" className="project-card reveal reveal-delay-1">
+            <a href="https://reddit-tech-news-prm.pages.dev/" target="_blank" rel="noopener noreferrer" className="project-card reveal reveal-delay-2">
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                 <Github size={20} color="var(--text-secondary)" />
                 <ExternalLink size={20} color="var(--text-secondary)" />
@@ -129,7 +166,7 @@ function App() {
               </div>
             </a>
 
-            <a href="https://finance-flow-prm.pages.dev/" target="_blank" rel="noopener noreferrer" className="project-card reveal reveal-delay-2">
+            <a href="https://finance-flow-prm.pages.dev/" target="_blank" rel="noopener noreferrer" className="project-card reveal reveal-delay-3">
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                 <Github size={20} color="var(--text-secondary)" />
                 <ExternalLink size={20} color="var(--text-secondary)" />
@@ -143,7 +180,7 @@ function App() {
               </div>
             </a>
 
-            <a href="https://sparta-fitness-v1.netlify.app" target="_blank" rel="noopener noreferrer" className="project-card reveal reveal-delay-3">
+            <a href="https://sparta-fitness-v1.netlify.app" target="_blank" rel="noopener noreferrer" className="project-card reveal reveal-delay-4">
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                 <Github size={20} color="var(--text-secondary)" />
                 <ExternalLink size={20} color="var(--text-secondary)" />
@@ -211,6 +248,25 @@ function App() {
           </div>
         </section>
       </main>
+
+      <div className="mobile-nav-dock">
+        <a href="#home" className={`mobile-nav-item ${activeSection === 'home' ? 'active' : ''}`}>
+          <Home size={20} />
+          <span>Home</span>
+        </a>
+        <a href="#about" className={`mobile-nav-item ${activeSection === 'about' ? 'active' : ''}`}>
+          <User size={20} />
+          <span>Sobre</span>
+        </a>
+        <a href="#projects" className={`mobile-nav-item ${activeSection === 'projects' ? 'active' : ''}`}>
+          <Briefcase size={20} />
+          <span>Projetos</span>
+        </a>
+        <a href="#contact" className={`mobile-nav-item ${activeSection === 'contact' ? 'active' : ''}`}>
+          <Mail size={20} />
+          <span>Contato</span>
+        </a>
+      </div>
 
       <style>{`
         .tech-badge {
@@ -283,6 +339,56 @@ function App() {
           color: var(--accent);
           transform: translateX(4px);
           opacity: 1;
+        }
+        .mobile-nav-dock {
+          display: none;
+        }
+        @media (max-width: 768px) {
+          .contact-links-grid {
+            grid-template-columns: 1fr;
+          }
+          .mobile-nav-dock {
+            display: flex;
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            gap: 0.75rem;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            width: max-content;
+            align-items: center;
+            justify-content: center;
+          }
+          .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 500;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            transition: var(--transition);
+          }
+          .mobile-nav-item svg {
+            transition: var(--transition);
+          }
+          .mobile-nav-item.active {
+            color: var(--accent);
+            background: rgba(99, 102, 241, 0.1);
+          }
+          .mobile-nav-item.active svg {
+            transform: translateY(-2px);
+          }
         }
       `}</style>
     </>

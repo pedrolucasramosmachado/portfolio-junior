@@ -10,6 +10,7 @@ Estes projetos foram selecionados para demonstrar competências reais de mercado
 
 | Projeto | Link de Produção | Key Techs | O que prova? |
 |---|---|---|---|
+| 🏦 **NewBanks Web** | [Visualizar Projeto](https://newbanks-web.vercel.app/login) | React, TypeScript, Vite, Vercel | Sistema bancário/fintech com fluxo de autenticação e gestão financeira. |
 | 📋 **Kanban Pro** | [Visualizar Projeto](https://kanban-pro-ux-prm.pages.dev/) | React 19, Framer Motion | UI/UX Premium, animações e persistência (LocalStorage). |
 | 💰 **FinanceFlow Dash** | [Visualizar Projeto](https://finance-flow-prm.pages.dev/) | React, Recharts | Dashboard interativo e gestão de fluxos de dados complexos. |
 | 📰 **Reddit Tech News** | [Visualizar Projeto](https://reddit-tech-news-prm.pages.dev/) | API Fetch, Translate API | Integração com serviços externos e tratamento de estados. |
