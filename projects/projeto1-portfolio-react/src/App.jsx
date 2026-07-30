@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, ArrowRight, Github, ExternalLink, Code2, X, Terminal, Mail, MessageCircle, Instagram, Home, User, Briefcase } from 'lucide-react';
+import { Moon, Sun, ArrowRight, Github, ExternalLink, Code2, X, Terminal, Mail, MessageCircle, Instagram, Home, User, Briefcase, Bot, ShieldCheck, ArrowUpRight, Landmark, Sparkles } from 'lucide-react';
 import './index.css';
 import profilePic from './assets/profile.jpg';
 
@@ -7,6 +7,7 @@ import profilePic from './assets/profile.jpg';
 function App() {
   const [theme, setTheme] = useState('dark');
   const [activeSection, setActiveSection] = useState('home');
+  const [selectedProject, setSelectedProject] = useState(null);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -128,12 +129,12 @@ function App() {
                 <Github size={20} color="var(--text-secondary)" />
                 <ExternalLink size={20} color="var(--text-secondary)" />
               </div>
-              <h3>NewBanks Web | Fintech Platform</h3>
-              <p>Plataforma bancária e fintech moderna com fluxo de autenticação, dashboard de gestão financeira e interface responsiva otimizada.</p>
+              <h3>NewBanks Web | Fintech & AI</h3>
+              <p>Plataforma bancária neobank com sistema de autenticação, transações de conta para conta (enviar/sacar) e IA assistente financeiro.</p>
               <div style={{ marginTop: 'auto', paddingTop: '1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                 <span className="tech-badge">React</span>
                 <span className="tech-badge">TypeScript</span>
-                <span className="tech-badge">Vite</span>
+                <span className="tech-badge">Fintech AI</span>
                 <span className="tech-badge">Vercel</span>
               </div>
             </a>
