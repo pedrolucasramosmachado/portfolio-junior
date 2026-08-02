@@ -14,7 +14,7 @@ Estes projetos foram selecionados para demonstrar competências reais de mercado
 | 📋 **Kanban Pro** | [Visualizar Projeto](https://kanban-pro-ux-prm.pages.dev/) | React 19, Framer Motion | UI/UX Premium, animações e persistência (LocalStorage). |
 | 💰 **FinanceFlow Dash** | [Visualizar Projeto](https://finance-flow-prm.pages.dev/) | React, Recharts | Dashboard interativo e gestão de fluxos de dados complexos. |
 | 📰 **Reddit Tech News** | [Visualizar Projeto](https://reddit-tech-news-prm.pages.dev/) | API Fetch, Translate API | Integração com serviços externos e tratamento de estados. |
-| 🌐 **Portfolio Core** | [Visualizar Projeto](https://pedro-jr-portfolio-prm.pages.dev/) | React, Lucide, Glassmorphism | Design System, Responsividade e Navegação Central. |
+| 🌐 **Portfolio Core** | [Visualizar Projeto](https://pedro-jr-portfolio-prm.netlify.app/) | React, Lucide, Glassmorphism | Design System, Responsividade e Navegação Central. |
 
 ---
 
